@@ -1,6 +1,6 @@
 #!/bin/sh
 
-nohup grafana-server                                                \
+./grafana-server                                            \
   --homepath="$GF_PATHS_HOME"                               \
   --config="$GF_PATHS_CONFIG"                               \
   --packaging=docker                                        \
