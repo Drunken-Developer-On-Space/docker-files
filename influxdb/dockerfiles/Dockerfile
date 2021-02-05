@@ -12,5 +12,4 @@ RUN apk update && \
 EXPOSE 8086
 
 ### Start InfluxDB
-CMD rc-update add influxdb default && \
-    openrc default
+CMD ["/bin/sh", "-c", "influxd", "run"]
