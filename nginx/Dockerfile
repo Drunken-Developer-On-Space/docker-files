@@ -29,10 +29,4 @@ COPY ssl.conf /etc/nginx/http.d/
 ###
 
 EXPOSE 80 443
-ENTRYPOINT ["/bin/sh", "-c", "nginx"]
-CMD ["-g", "daemon off"]
-
-
-
-
-
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
