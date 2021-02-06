@@ -1,10 +1,18 @@
 FROM alpine
 LABEL maintainer="tunerprime"
 
+
+### install nginx
 RUN apk update \
     && apk add nginx \
-    && mkdir -p /run/nginx \ # saved pid path
-    && apk add openssl \
+    && mkdir -p /run/nginx # saved pid path
+
+COPY index.html /usr/share/nginx/html/
+###
+
+
+### install openssl and setup https
+RUN apk add openssl \
     && mkdir -p /root/ssl && cd /root/ssl \
     && openssl ecparam -out rootca.key -name prime256v1 -genkey \
     && openssl req -new -sha256 -key rootca.key -out rootca.csr -subj "/C=KR/ST=Gyeonggi-do/L=Anyang/O=Drunken Developer On Space/OU=Nginx Part/CN=localhost" \
@@ -17,8 +25,8 @@ RUN apk update \
     && mv /root/ssl /var/ssl \
     && mkdir -p /usr/share/nginx/html
 
-COPY index.html /usr/share/nginx/html/
 COPY ssl.conf /etc/nginx/http.d/
+###
 
 EXPOSE 80 443
 CMD nginx -g 'daemon off;'
