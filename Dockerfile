@@ -1,12 +1,11 @@
-FROM alpine
+FROM ubuntu:14.04
 LABEL mainteiner "Dry8r3aD <me@dry8r3ad.com>"
 
-RUN apk update
-RUN apk add mysql
+RUN apt update && apt install mysql-server
 
 VOLUME /var/lib/mysql
 
 EXPOSE 3306
 
-RUN ["/bin/sh", "-c", "/usr/bin/mysqld --user=mysql"]
+RUN ["/bin/sh", "-c", "service mysql start"]
 
