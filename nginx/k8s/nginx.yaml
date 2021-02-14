@@ -22,9 +22,9 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
-              name: http
+              name: container-http
             - containerPort: 443
-              name: https
+              name: container-https
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -37,8 +37,8 @@ spec:
   ports:
     - port: 8080
       name: http
-      targetPort: http
+      targetPort: container-http
     - port: 8443
       name: https
-      targetPort: https
+      targetPort: container-https
   type: ClusterIP
