@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploy-nginx
-  labels:
-    app: my-nginx
 spec:
   replicas: 3
   selector:
@@ -20,8 +18,13 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:latest
+          image: nginx:lwj
           imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -30,8 +33,12 @@ metadata:
   name: nginx-service
 spec:
   selector:
-    app: my-nginx
+    app: nginx-pod
   ports:
-    - port: 80
+    - port: 8443
+      name: https
       targetPort: 80
-  type: NodePort
+    - port: 8080
+      name: http
+      targetPort: 443
+  type: ClusterIP
