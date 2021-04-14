@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod
+  template:
+    #######
+    # pod #
+    #######
+    metadata:
+      name: nginx-replica
+      labels:
+        app: nginx-pod
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: container-http
+            - containerPort: 443
+              name: container-https
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx-pod
+  ports:
+    - port: 8080
+      name: http
+      targetPort: container-http
+    - port: 8443
+      name: https
+      targetPort: container-https
+  type: ClusterIP
